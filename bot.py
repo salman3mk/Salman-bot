@@ -1,25 +1,16 @@
-import logging
-from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
+from telegram.ext import ApplicationBuilder, MessageHandler, filters
 
 TOKEN = "8884861151:AAHnuEI8tLuXLTwK9X7KSIkim6lNDorFUoc"
 
 async def check_edited_message(update, context):
     if update.edited_message and update.edited_message.photo:
         try:
-            chat_id = update.edited_message.chat_id
-            message_id = update.edited_message.message_id
-            user = update.edited_message.from_user
-            
-            # حذف الرسالة
-            await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-            
-            # إرسال التنبيه
-            mention = f"[{user.first_name}](tg://user?id={user.id})"
-            await context.bot.send_message(
-                chat_id=chat_id, 
-                text=f"يا {mention}، لقطتك تعدل الصورة! 🚫 تم الحذف.",
-                parse_mode='Markdown'
+            await context.bot.delete_message(
+                chat_id=update.edited_message.chat_id, 
+                message_id=update.edited_message.message_id
             )
+            # تم حذف المنشن مؤقتاً عشان نتأكد أن الكود يشتغل بدون أخطاء إرسال
+            print("تم الحذف بنجاح")
         except Exception as e:
             print(f"Error: {e}")
 
