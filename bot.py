@@ -1,12 +1,9 @@
 import logging
-from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
-logging.basicConfig(level=logging.INFO)
+TOKEN = "8884861151:AAHnuEI8tLuXLTwK9X7KSIkim6lNDorFUoc"
 
-TOKEN = "8903189772:AAFEir4RIJUQDKCFYXnWVrqDmejNfK-B914"
-
-async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_edited_message(update, context):
     if update.edited_message and update.edited_message.photo:
         try:
             chat_id = update.edited_message.chat_id
@@ -27,7 +24,6 @@ async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYP
             print(f"Error: {e}")
 
 if __name__ == '__main__':
-    # الطريقة الأكثر استقراراً في Render
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(MessageHandler(filters.UpdateType.EDITED_MESSAGE, check_edited_message))
     print("البوت يعمل الآن...")
