@@ -1,0 +1,39 @@
+import logging
+from telegram import Update
+from telegram.ext import Application, MessageHandler, filters, ContextTypes
+
+# تفعيل نظام تسجيل الأخطاء (Log)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+)
+
+# التوكن الخاص بك
+TOKEN = "8903189772:AAFEir4RIJUQDKCFYXnWVrqDmejNfK-B914"
+
+async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # التحقق من أن التعديل يحتوي على صورة (Photo)
+    if update.edited_message and update.edited_message.photo:
+        try:
+            chat_id = update.edited_message.chat_id
+            message_id = update.edited_message.message_id
+            
+            # حذف الرسالة المعدلة فوراً
+            await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
+            print(f"تم بنجاح حذف رسالة معدلة إلى صورة في المجموعة: {chat_id}")
+            
+        except Exception as e:
+            print(f"تعذر حذف الرسالة، تأكد من صلاحيات البوت. الخطأ: {e}")
+
+def main():
+    # بناء تطبيق البوت بالتوكن الخاص بك
+    application = Application.builder().token(TOKEN).build()
+
+    # مراقبة التعديلات فقط التي تتحول إلى صور
+    application.add_handler(MessageHandler(filters.UpdateType.EDITED_MESSAGE, check_edited_message))
+
+    # تشغيل مستمر للبوت
+    print("البوت يعمل الآن ومستعد لحذف الصور المعدلة...")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+if __name__ == '__main__':
+    main()
