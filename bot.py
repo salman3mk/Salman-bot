@@ -9,8 +9,8 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# التوكن الخاص بك
-TOKEN = "8903189772:AAFEir4RIJUQDKCFYXnWVrqDm"
+# التوكن الجديد الصحيح الخاص بك
+TOKEN = "8903189772:AAFEir4RIJUQDKCFYXnWVrqDmejNfK-B914"
 
 async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # التحقق من أن التعديل يحتوي على صورة (Photo)
@@ -27,10 +27,10 @@ async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYP
             print(f"الخطأ أثناء الحذف: {e}. تأكد من صلاحيات البوت.")
 
 def main():
-    # بناء التطبيق باستخدام التوكن
+    # بناء التطبيق باستخدام التوكن الصحيح
     application = Application.builder().token(TOKEN).build()
 
-    # إضافة معالج للرسائل المعدلة فقط (تم تعديلها للمفرد لتوافق المكتبة)
+    # إضافة معالج للرسائل المعدلة فقط
     application.add_handler(MessageHandler(filters.UpdateType.EDITED_MESSAGE, check_edited_message))
 
     # تشغيل البوت بطريقة متوافقة مع السيرفر والـ event loop
