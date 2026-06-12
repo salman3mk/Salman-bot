@@ -1,4 +1,5 @@
 async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # التأكد من وجود رسالة معدلة وتحتوي على صورة
     if update.edited_message and update.edited_message.photo:
         try:
             chat_id = update.edited_message.chat_id
@@ -8,14 +9,14 @@ async def check_edited_message(update: Update, context: ContextTypes.DEFAULT_TYP
             # 1. حذف الرسالة
             await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
             
-            # 2. إرسال تنبيه مع منشن للشخص (استخدام الـ mention_html)
-            user_mention = user.mention_html(user.first_name)
+            # 2. إرسال التنبيه بطريقة أبسط
+            mention = f"[{user.first_name}](tg://user?id={user.id})"
             await context.bot.send_message(
                 chat_id=chat_id, 
-                text=f"لقطت {user_mention} يعدل الصورة.. حذفتها! 🚫",
-                parse_mode='HTML'
+                text=f"يا {mention}، لقطتك تعدل الصورة! 🚫 تم الحذف.",
+                parse_mode='Markdown'
             )
             
-            print(f"تم حذف صورة معدلة لـ {user.first_name}")
+            print(f"تم الحذف والتبليغ عن {user.first_name}")
         except Exception as e:
-            print(f"خطأ أثناء الحذف: {e}")
+            print(f"خطأ: {e}")
